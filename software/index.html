@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dirt Tracker Portal</title>
+  </head>
+  <body>
+    <h1>Dirt Tracker Portal</h1>
+    <form method="post" enctype="multipart/form-data" action="/upload-route-sheet">
+      <div>
+        <label for="file">Choose route file to upload</label>
+        <input type="file" id="route_file" name="route_file" accept="application/json">
+      </div>
+      <div>
+        <button>Upload</button>
+      </div>
+    </form>
+   
+  </body>
+</html>
