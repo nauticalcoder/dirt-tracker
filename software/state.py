@@ -29,3 +29,6 @@ class StateMachine(object):
     def _populate_state_map(self):
         for state in self.states:
             self.states_map[state.value] = state
+    
+    #def up():
+        

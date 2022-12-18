@@ -359,6 +359,6 @@ def run(host = "0.0.0.0", port = 80):
 
 def shutdown():
   logging.info("> shutting down web server")
-  loop.stop()
+  # loop.stop()
 
 

@@ -1,3 +1,4 @@
+from gps import Gps
 from phew import logging
 from web_server import WebServer
 
@@ -21,7 +22,7 @@ VERSION = "0.1"
     
 #main_state_machine = None
 current_menu = "upload_enduro_route"
-
+gps = None
 
 def test():
     print("Test")
@@ -33,7 +34,14 @@ def test():
     #enduro_upload = State("Upload enduro route sheet")
     #hare_scramble_setup = State("Hare scramble setup")
     #main_state_machine = StateMachine("Main", main_menu, enduro_setup, enduro_upload, hare_scramble_setup)
-    
+
+
+def initialize():
+    global gps
+    gps = Gps()
+    gps.start()
+
+
 def main():
     #timer = Timer(-1)
     #timer.init(period=1000, mode=Timer.ONE_SHOT, callback=lambda t: star())
