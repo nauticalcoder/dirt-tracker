@@ -51,9 +51,9 @@ def main():
     # start_wireless_server()
     #     main_state = MainMachine()
     # setup_state_machine()
-    initialize()
-    logging.info(f"Dirty Tracker {VERSION} started")
     
+    logging.info(f"Dirty Tracker {VERSION} started")
+    initialize()
    
     
     global current_screen
