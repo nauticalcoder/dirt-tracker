@@ -1,4 +1,7 @@
 
+SCREEN_UPLOAD_ENDURO_ROUTE = "upload_enduro_route"
+SCREEN_MAIN = "main"
+
 
 class Screen(object):
 
