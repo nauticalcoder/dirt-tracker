@@ -47,4 +47,7 @@ MicroPython
 
 Known Bugs
 - GPS read task is blocking
+  
+
+![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/20221219_153224.jpg "Debugging setup")
 
