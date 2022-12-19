@@ -12,7 +12,7 @@ Pico
 |6 - TX|RX||
 |7 - RX|TX||
 |36 - +3.3V|VIN||
-|7 - GND|GND||
+|18 - GND|GND||
 
 
 Display
