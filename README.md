@@ -9,7 +9,7 @@ GPS module (https://www.adafruit.com/product/746)
 Pico 	
 |Pico |GPS Module  | |
 --- | --- | ---|
-|6 - TX|RX||
+|6 - TX|RX|Using UART1 on the Pico|
 |7 - RX|TX||
 |36 - +3.3V|VIN||
 |18 - GND|GND||
@@ -41,4 +41,10 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 
 
 ## Software
+MicroPython
+- Webserver with self-hosted WIFI access point - To be used for uploading configuration and route sheets
+- GPS module - Read GPS module and set GPS data for access from the main application
+
+Known Bugs
+- GPS read task is blocking
 

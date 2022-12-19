@@ -8,6 +8,6 @@ class Main(Screen):
         super().__init__(SCREEN_MAIN)
     
     def render(self):
-        return
+        #return
         print(f"Screen {self.name}")
          
