@@ -46,7 +46,7 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 - GPS module - Read GPS module and set GPS data for access from the main application
 
 Known Bugs
-- GPS read task is blocking
+~~- GPS read task is blocking~~
   
 
 ![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/20221219_153224.jpg "Debugging setup")
