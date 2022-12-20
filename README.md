@@ -34,7 +34,6 @@ Battery or wiring into bikes electrical system.
 Initially, we will rely on battery power as it is simpler and eliminates the problem of noise from the bikes electrical system.
 
 
-
 ### Case
 Once we have all of the hardware in hand and wired up, we will design a case for it and print it using our 3d printer.
 
@@ -45,9 +44,16 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 - Webserver with self-hosted WIFI access point - To be used for uploading configuration and route sheets
 - GPS module - Read GPS module and set GPS data for access from the main application
 
-Known Bugs
+### Known Bugs
 ~~- GPS read task is blocking~~
-  
+
+### Todo
+- Add some switches to the breadboard for testing the UI
+- Handle multiple screens and switching between them
+- Handle executing tasks from a screen
+- Add events for circuit mode: start, stop, lap
+- Add background process to track distance traveled, calculate speed, lap time, avg lap time, overall time
+- 
 
 ![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/20221219_153224.jpg "Debugging setup")
 
