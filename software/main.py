@@ -1,7 +1,9 @@
 from gps import Gps
 from phew import logging
+import queue
 from screens.main import Main
 from screens.screen import SCREEN_MAIN, SCREEN_UPLOAD_ENDURO_ROUTE
+from uasyncio import create_task, run, sleep
 from web_server import WebServer
 
 from machine import Pin, Timer
@@ -44,21 +46,7 @@ def initialize():
     gps = Gps()
     gps.start()
 
-
-def main():
-    # timer = Timer(-1)
-    # timer.init(period=1000, mode=Timer.ONE_SHOT, callback=lambda t: star())
-    # start_wireless_server()
-    #     main_state = MainMachine()
-    # setup_state_machine()
-    
-    logging.info(f"Dirty Tracker {VERSION} started")
-    initialize()
-   
-    
-    global current_screen
-    current_screen = Main()
-    
+async def render_loop():
     while True:
         if current_screen.name == SCREEN_UPLOAD_ENDURO_ROUTE:
             # TODO Handle transition, ideally we would encapsulate this into a state machine
@@ -67,7 +55,29 @@ def main():
                 web_server.start()
         elif current_screen.name == SCREEN_MAIN:
             current_screen.render()
+        await sleep(1)     
+    
+async def main():
+    global current_screen, gps
+    # timer = Timer(-1)
+    # timer.init(period=1000, mode=Timer.ONE_SHOT, callback=lambda t: star())
+    # start_wireless_server()
+    #     main_state = MainMachine()
+    # setup_state_machine()
+    gps_queue = queue.Queue()
+    
+    logging.info(f"Dirty Tracker {VERSION} started")
+    #initialize()
+    # initialize
+    gps = Gps()
+    current_screen = Main()
+    # Start tasks
+    render_task = create_task(render_loop())
+    gps_task = create_task(gps.start(gps_queue))
+    
+    await render_task
 
+  
 
 if __name__ == '__main__':
-    main()
+    run(main())
