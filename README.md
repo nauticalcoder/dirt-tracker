@@ -25,6 +25,8 @@ https://www.aliexpress.us/item/3256802905454804.html?spm=a2g0o.new_account_index
 Handlebar switch
 We could repurpose the Checkmate switch (https://www.icoracing.com/collections/checkmate-products/products/checkmate-thumb-switch) or opt for  cheaper option like this one from Lithuania (https://www.ebay.com/itm/115052979147) or an even cheaper option like this (https://www.ebay.com/itm/184490093751?var=692193959146).
 
+Added 3 buttons for command and control on the breadboard.  
+
 ### Wheel speed sensor or GPS
 We have the option of wiring up the bikes existing front wheel speed sensor or adding another sensor.  Alternatively we can add a GPS module and rely soley on GPS.  They each have their pros and cons nicely outlined in this article (https://www.icoracing.com/pages/why-gps-is-so-wrong-for-measuring-distance-travelled).
 
@@ -32,7 +34,7 @@ We have the option of wiring up the bikes existing front wheel speed sensor or a
 ### Power
 Battery or wiring into bikes electrical system.
 Initially, we will rely on battery power as it is simpler and eliminates the problem of noise from the bikes electrical system.
-
+Use Pololu powerswitch to turn device on and off
 
 ### Case
 Once we have all of the hardware in hand and wired up, we will design a case for it and print it using our 3d printer.
@@ -72,11 +74,12 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 
 ### Todo
 - Add some switches to the breadboard for testing the UI
+- Define button interaction
 - Handle multiple screens and switching between them
 - Handle executing tasks from a screen
 - Add events for circuit mode: start, stop, lap
-- Add background process to track distance traveled, calculate speed, lap time, avg lap time, overall time
-- 
+- Add background process to track distance traveled, calculate speed, lap time, avg lap time, overall time, Haversine method (https://maker.pro/forums/threads/calculating-distance-using-gps.119820/)
+- Wireup breadboard so this can be tested more easily with buttons and walked outside
 
 ![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/20221219_153224.jpg "Debugging setup")
 

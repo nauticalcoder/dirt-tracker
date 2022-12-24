@@ -8,7 +8,7 @@ import time
 from uasyncio import create_task, run, sleep
 from web_server import WebServer
 
-from machine import Pin, Timer
+from machine import Pin, Timer, lightsleep
 import network
 # from statemachine.statemachine import StateMachine, State
 from state import State, StateMachine, Transition
@@ -20,6 +20,9 @@ MODE_CIRCUIT = "circuit"
 MODE_ENDURO = "enduro"
 MODE_ENDURO_TIMEKEEPING = "enduro-timekeeping"
 
+COMMAND_BUTTON_1 = "button-one"
+COMMAND_BUTTON_2 = "button-two"
+COMMAND_BUTTON_3 = "button-three"
 # class MainMachine(StateMachine):
 #     green = State('Green', initial=True)
 #     yellow = State('Yellow')
@@ -57,6 +60,7 @@ def initialize():
     gps = Gps()
     gps.start()
 
+
 async def render_loop():
     while True:
         if current_screen.name == SCREEN_UPLOAD_ENDURO_ROUTE:
@@ -68,6 +72,7 @@ async def render_loop():
             current_screen.render()
         await sleep(1)     
 
+
 async def distance_loop():
     start_ticks = time.ticks_ms()
     while True:
@@ -77,12 +82,22 @@ async def distance_loop():
         last_gps_timestamp = gps_data.timestamp
         await sleep(0.1)
 
+
 def handle_button_press(button):
     print(f"Button {button} pressed")
+    #lightsleep(10000)
+    switch = {
+        1: COMMAND_BUTTON_1,
+        2: COMMAND_BUTTON_2,
+        3: COMMAND_BUTTON_3
+    }
+    command_queue.put(switch.get(button))
+    
 
 def handle_button_1_double_press(button):
     print("Button {button} double pressed")
-    
+
+
 async def main():
     global current_screen, gps
     # timer = Timer(-1)
@@ -110,10 +125,14 @@ async def main():
     button2.press_func(handle_button_press, {2})
     button3.press_func(handle_button_press, {3})
 
-    while True:
+    #while True:
+    #    command = await command_queue.get()
+    #    print(f"command {command}")
+    #    if command:
+    #        print(command)
         #print(f"Switch 1 {button21.value()}")
         #print(f"Switch 2 {sw2.value()}")
-        await sleep(.1)
+    #    await sleep(0.1)
         
     # Start tasks
     render_task = create_task(render_loop())
@@ -121,7 +140,6 @@ async def main():
     
     await render_task
 
-  
 
 if __name__ == '__main__':
     run(main())
