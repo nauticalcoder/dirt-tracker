@@ -40,6 +40,29 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 
 
 ## Software
+### User Interface
+- Modes: 
+-- Ride
+--- Reset (Clear distance and time)
+--- Start time
+--- Stop time
+-- Circuit
+--- Reset (Clear distance and time)
+--- Start time
+--- Stop time
+--- Mark lap
+-- Enduro
+--- 
+--- 
+-- Timekeeping Enduro
+---
+--- 
+- Configuration: Setup wheel speed sensor,  Upload route sheet
+### Background processes
+- GPS polling
+- Polling for switches
+- Track distance traveled
+- Render current screen
 ### MicroPython
 - Webserver with self-hosted WIFI access point - To be used for uploading configuration and route sheets
 - GPS module - Read GPS module and set GPS data for access from the main application
