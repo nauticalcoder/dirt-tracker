@@ -78,7 +78,7 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 -- A list of actions and the button combinations to activate them
 - The main menu will be a finite state machine (FSM)
 - Each mode will have its own more detailed state diagram and FSM within the application
-![Alt text]('https://github.com/nauticalcoder/dirt-tracker/blob/master/Dirt Tracker State Diagram.svg' "Debugging setup")
+	![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/Dirt%20Tracker%20State%20Diagram.svg "Debugging setup")
 
 ### Known Bugs
 ~~- GPS read task is blocking~~
