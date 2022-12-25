@@ -60,14 +60,25 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 ---
 --- 
 - Configuration: Setup wheel speed sensor,  Upload route sheet
+
 ### Background processes
 - GPS polling
 - Polling for switches
 - Track distance traveled
 - Render current screen
+- 
 ### MicroPython
 - Webserver with self-hosted WIFI access point - To be used for uploading configuration and route sheets
 - GPS module - Read GPS module and set GPS data for access from the main application
+
+### State Diagram
+- Only fleshed out the "Ride" mode currently.  Still need to work on the more advanced "Circuit Race" and "Enduro Race" modes
+- Each mode will have the following:
+-- A list of informational screens that can be cycled through
+-- A list of actions and the button combinations to activate them
+- The main menu will be a finite state machine (FSM)
+- Each mode will have its own more detailed state diagram and FSM within the application
+![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/Dirt Tracker State Diagram.svg "Debugging setup")
 
 ### Known Bugs
 ~~- GPS read task is blocking~~
