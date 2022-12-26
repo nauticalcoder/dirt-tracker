@@ -1,4 +1,5 @@
 from gps import Gps
+import menu
 from phew import logging
 from pushbutton import Pushbutton
 import queue
@@ -107,13 +108,14 @@ async def main():
     pin19 = Pin(19, Pin.IN, Pin.PULL_DOWN)
     button1 = Pushbutton(pin21)
     button2 = Pushbutton(pin20)
-    button3 = Pushbutton(pin19)
+    # button3 = Pushbutton(pin19)
 
     button1.press_func(handle_button_press, {1})
 #    button1.double_func(handle_button_1_double_press, {1})
     button2.press_func(handle_button_press, {2})
     button2.long_func(handle_button_long_press, {2})
 #    button3.press_func(handle_button_press, {3})
+    main_menu = menu.Menu()
 
     #while True:
     #    command = await command_queue.get()
@@ -123,7 +125,8 @@ async def main():
         #print(f"Switch 1 {button21.value()}")
         #print(f"Switch 2 {sw2.value()}")
     #    await sleep(0.1)
-        
+
+    print(main_menu.states.peek())
     # Start tasks
     render_task = create_task(render_loop())
     gps_task = create_task(gps.start(gps_queue))
