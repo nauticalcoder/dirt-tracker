@@ -74,10 +74,17 @@ class ChangeModesMenuState(MenuState):
         super().handle_input(button, action)
         if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 1 - Next menu item
-            self._cycle_screen()
+            self._cycle_menu_item()
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 2 - Select
-            self._cycle_screen()
+            switch = {
+                1: None #TODO figure out how to initiate secondary FSM for each mode - Ride Mode,
+                2: None #TODO figure out how to initiate secondary FSM for each mode - Circuit Mode,
+                3: None None #TODO figure out how to initiate secondary FSM for each mode - Enduro Mode,
+                4: ConfigurationMenuState(),
+                5: Pop()
+            }
+            return switch[self.selected_menu_item]
         pass
     
     def _cycle_menu_item(self):
@@ -106,7 +113,9 @@ class LoadRouteSheetMenuState(MenuState):
     def handle_input(self, button, action):
         MenuState.handle_input(self, button, action)
         pass
-
+    
+class Pop(MenuState):
+    pass
 
 class Menu(object):
     def __init__(self):
@@ -118,7 +127,9 @@ class Menu(object):
         
     def handle_input(self, button, action):
         new_state = self.states.peek().handle_input(button, action)
-        if new_state:
+        if isinstance(new_state, Pop):
+            self.states.pop()
+        else:
             self._to(new_state)
             
     def get_screen(self):
