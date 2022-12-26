@@ -85,10 +85,10 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 
 ### Todo
 - Add entry and exit transitions to main menu state machine
-~~- Add rendering of proper screen to state machine~~
-~~- Add handling of buttons to state machine~~
+- ~~Add rendering of proper screen to state machine~~
+- ~~Add handling of buttons to state machine~~
 - Add some switches to the breadboard for testing the UI
-~~- Define button interaction~~
+- ~~Define button interaction~~
 - Handle multiple screens and switching between them
 - Handle executing tasks from a screen
 - Add events for circuit mode: start, stop, lap
