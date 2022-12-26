@@ -12,9 +12,11 @@ try:
 except ImportError:
     pass
 
+
 async def _g():
     pass
 type_coro = type(_g())
+
 
 # If a callback is passed, run it and return.
 # If a coro is passed initiate it and return.
@@ -24,6 +26,7 @@ def launch(func, tup_args):
     if isinstance(res, type_coro):
         res = asyncio.create_task(res)
     return res
+
 
 class Pushbutton:
     debounce_ms = 50

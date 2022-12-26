@@ -23,16 +23,10 @@ MODE_ENDURO_TIMEKEEPING = "enduro-timekeeping"
 COMMAND_BUTTON_1 = "button-one"
 COMMAND_BUTTON_2 = "button-two"
 COMMAND_BUTTON_3 = "button-three"
-# class MainMachine(StateMachine):
-#     green = State('Green', initial=True)
-#     yellow = State('Yellow')
-#     red = State('Red')
-# 
-#     slowdown = green.to(yellow)
-#     stop = yellow.to(red)
-#     go = red.to(green)
+COMMAND_BUTTON_1_LONG = "button-one-long"
+COMMAND_BUTTON_2_LONG = "button-two-long"
+COMMAND_BUTTON_3_LONG = "button-three-long"
 
-# main_state_machine = None
 previous_screen = None
 current_screen = None
 gps = None
@@ -41,18 +35,6 @@ current_mode = MODE_RIDE
 app_start_ticks = time.ticks_ms()
 gps_queue = queue.Queue()
 command_queue = queue.Queue()
-
-def test():
-    print("Test")
-
-
-# def setup_state_machine():
-# global main_state_machine
-# main_menu = State("Main menu", initial=True)
-# enduro_setup = State("Enduro setup")
-# enduro_upload = State("Upload enduro route sheet")
-# hare_scramble_setup = State("Hare scramble setup")
-# main_state_machine = StateMachine("Main", main_menu, enduro_setup, enduro_upload, hare_scramble_setup)
 
 
 def initialize():
@@ -92,7 +74,17 @@ def handle_button_press(button):
         3: COMMAND_BUTTON_3
     }
     command_queue.put(switch.get(button))
-    
+
+
+def handle_button_long_press(button):
+    print(f"Button {button} long pressed")
+    switch = {
+        1: COMMAND_BUTTON_1_LONG,
+        2: COMMAND_BUTTON_2_LONG,
+        3: COMMAND_BUTTON_3_LONG
+    }
+    command_queue.put(switch.get(button))
+
 
 def handle_button_1_double_press(button):
     print("Button {button} double pressed")
@@ -105,14 +97,11 @@ async def main():
     # start_wireless_server()
     #     main_state = MainMachine()
     # setup_state_machine()
-  
-    
+
     logging.info(f"Dirty Tracker {VERSION} started")
     #initialize()
-    # initialize
     gps = Gps()
     current_screen = Main()
-    #sw1 = Pin(28, Pin.IN, Pin.PULL_DOWN)
     pin21 = Pin(21, Pin.IN, Pin.PULL_DOWN)
     pin20 = Pin(20, Pin.IN, Pin.PULL_DOWN)
     pin19 = Pin(19, Pin.IN, Pin.PULL_DOWN)
@@ -121,9 +110,10 @@ async def main():
     button3 = Pushbutton(pin19)
 
     button1.press_func(handle_button_press, {1})
-    button1.double_func(handle_button_1_double_press, {1})
+#    button1.double_func(handle_button_1_double_press, {1})
     button2.press_func(handle_button_press, {2})
-    button3.press_func(handle_button_press, {3})
+    button2.long_func(handle_button_long_press, {2})
+#    button3.press_func(handle_button_press, {3})
 
     #while True:
     #    command = await command_queue.get()
