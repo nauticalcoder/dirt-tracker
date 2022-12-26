@@ -1,0 +1,5 @@
+COMMAND_BUTTON_1 = "button-one"
+COMMAND_BUTTON_2 = "button-two"
+COMMAND_BUTTON_3 = "button-three"
+COMMAND_BUTTON_ACTION_SHORTPRESS = "short-press"
+COMMAND_BUTTON_ACTION_LONGPRESS = "long-press"

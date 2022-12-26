@@ -48,7 +48,7 @@ class Gps(object):
             #print("uart loop")
             #nmea_line_bytes = uart1.readline()
             nmea_line_bytes = await sreader.readline()
-            print('Recieved', nmea_line_bytes)
+            #print('Recieved', nmea_line_bytes)
             queue.put(nmea_line_bytes)
 #             
 #             if uart1.any():
