@@ -4,8 +4,6 @@ import menu
 from phew import logging
 from pushbutton import Pushbutton
 import queue
-from screens.main import Main
-from screens.screen import SCREEN_MAIN, SCREEN_UPLOAD_ENDURO_ROUTE
 import time
 from uasyncio import create_task, run, sleep
 from web_server import WebServer
@@ -26,10 +24,10 @@ MODE_ENDURO_TIMEKEEPING = "enduro-timekeeping"
 
 
 
-previous_screen = None
-current_screen = None
+# previous_screen = None
+# current_screen = None
 gps = None
-current_mode = MODE_RIDE
+# current_mode = MODE_RIDE
 
 app_start_ticks = time.ticks_ms()
 gps_queue = queue.Queue()
@@ -51,8 +49,7 @@ async def render_loop(main_menu):
         #        web_server.start()
         #elif current_screen.name == SCREEN_MAIN:
         #    current_screen.render()
-        if main_menu.get_screen():
-            main_menu.get_screen().render()
+        main_menu.render()
             
         await sleep(1)     
 
@@ -88,7 +85,6 @@ async def main():
     logging.info(f"Dirty Tracker {VERSION} started")
     #initialize()
     gps = Gps()
-    current_screen = Main()
     pin21 = Pin(21, Pin.IN, Pin.PULL_DOWN)
     pin20 = Pin(20, Pin.IN, Pin.PULL_DOWN)
     pin19 = Pin(19, Pin.IN, Pin.PULL_DOWN)
@@ -96,9 +92,11 @@ async def main():
     button2 = Pushbutton(pin20)
     # button3 = Pushbutton(pin19)
 
-    spi = SPI(1, baudrate=10000000, sck=Pin(14), mosi=Pin(13))
-    display = Display(spi, dc=Pin(4), cs=Pin(5), rst=Pin(2))
+    spi = SPI(1, baudrate=10000000, sck=Pin(10, Pin.OUT), mosi=Pin(11, Pin.OUT))
+    display = Display(spi, dc=Pin(8, Pin.OUT), cs=Pin(13, Pin.OUT), rst=Pin(9, Pin.OUT))
     bally = XglcdFont('fonts/Bally7x9.c', 7, 9)
+    display = None
+    bally = None
     main_menu = menu.Menu(display, {"bally": bally})
 
     button1.press_func(handle_button_press, [buttons.COMMAND_BUTTON_1, main_menu])

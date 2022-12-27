@@ -90,7 +90,7 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 - ~~Add handling of buttons to state machine~~
 - Add some switches to the breadboard for testing the UI
 - ~~Define button interaction~~
-- Handle multiple screens and switching between them
+- ~~Handle multiple screens and switching between them~~
 - Handle executing tasks from a screen
 - Add events for circuit mode: start, stop, lap
 - Add background process to track distance traveled, calculate speed, lap time, avg lap time, overall time, Haversine method (https://maker.pro/forums/threads/calculating-distance-using-gps.119820/)
