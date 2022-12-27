@@ -20,6 +20,7 @@ For ease if viewing, a screen with a minumum width of 4" is required but I've ha
 
 https://www.aliexpress.us/item/3256802905454804.html?spm=a2g0o.new_account_index.0.0.1e3a25b9xPZlsI&gatewayAdapt=glo2usa&_randl_shipto=US
 
+Micropython library: https://github.com/rdagger/micropython-ssd1309
 
 ### Inputs
 Handlebar switch

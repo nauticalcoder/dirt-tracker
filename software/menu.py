@@ -13,10 +13,12 @@ MENU_STATE_LOAD_ROUTE_SHEET = "load-route-sheet"
 #         items = []
 
 class MenuState(object):
-    def __init__(self):
+    def __init__(self, display, fonts):
         self.value = None
         self._screens = []
         self._screen = None
+        self.display = display
+        self.fonts = fonts
         pass
     
     def handle_input(self, button, action):
@@ -25,13 +27,18 @@ class MenuState(object):
 
 
 class InfoMenuState(MenuState):
-    def __init__(self):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
         self.value = MENU_STATE_INFO
         self._index = 0
-        self._screens = []
-        self._screens.append(info_1.Info1())
-        self._screens.append(info_2.Info2())
-    
+        #self._screens = []
+        self._screens.append(info_1.Info1(display, fonts))
+        self._screens.append(info_2.Info2(display, fonts))
+
+        self.speed = 0
+        self.average_speed = 0
+        self.distance_traveled = 0
+
     def _cycle_screen(self):
         #print(f"Cycle screen B {self._index}")
         self._index += 1
@@ -51,7 +58,7 @@ class InfoMenuState(MenuState):
             self._cycle_screen()
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_LONGPRESS:
             # Button 2 Long Press - Change Modes
-            return ChangeModesMenuState()
+            return ChangeModesMenuState(self.display, self.fonts)
         pass
 
 
@@ -59,13 +66,14 @@ class ChangeModesMenuState(MenuState):
     # Get these from the screen
     menu_items = ["Start Circuit Race", "Start Enduro Race", "Configuration", "Back"]
     
-    def __init__(self):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
         self.value = MENU_STATE_CHANGE_MODES
         self.selected_menu_item = 0
         
         self._index = 0
-        self._screens = []
-        self._screens.append(mode_select.ModeSelect())
+        # self._screens = []
+        self._screens.append(mode_select.ModeSelect(display, fonts))
         
     def get_screen(self):
         return self._screens[self._index]
@@ -78,10 +86,10 @@ class ChangeModesMenuState(MenuState):
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 2 - Select
             switch = {
-                1: None #TODO figure out how to initiate secondary FSM for each mode - Ride Mode,
-                2: None #TODO figure out how to initiate secondary FSM for each mode - Circuit Mode,
-                3: None None #TODO figure out how to initiate secondary FSM for each mode - Enduro Mode,
-                4: ConfigurationMenuState(),
+                1: None,  # TODO figure out how to initiate secondary FSM for each mode - Ride Mode,
+                2: None,  # TODO figure out how to initiate secondary FSM for each mode - Circuit Mode,
+                3: None,  # TODO figure out how to initiate secondary FSM for each mode - Enduro Mode,
+                4: ConfigurationMenuState(self.display, self.fonts),
                 5: Pop()
             }
             return switch[self.selected_menu_item]
@@ -93,11 +101,13 @@ class ChangeModesMenuState(MenuState):
             self.selected_menu_item = 0
         print(self.selected_menu_item)
 
+
 class ConfigurationMenuState(MenuState):
-    def __init__(self):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
         self.value = MENU_STATE_CONFIGURATION
         self.selected_menu_item = 0
-        self._screens = []
+        # self._screens = []
 
     def handle_input(self, button, action):
         super().handle_input(button, action)
@@ -105,22 +115,25 @@ class ConfigurationMenuState(MenuState):
 
 
 class LoadRouteSheetMenuState(MenuState):
-    def __init__(self):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
         self.value = MENU_STATE_LOAD_ROUTE_SHEET
         self.selected_menu_item = 0
-        self._screens = []
+        # self._screens = []
 
     def handle_input(self, button, action):
         MenuState.handle_input(self, button, action)
         pass
-    
+
+
 class Pop(MenuState):
     pass
 
+
 class Menu(object):
-    def __init__(self):
+    def __init__(self, display, fonts):
         self.states = stack.Stack()
-        self.states.push(InfoMenuState())
+        self.states.push(InfoMenuState(display, fonts))
     
     def _to(self, state):
         self.states.push(state)
@@ -135,3 +148,5 @@ class Menu(object):
     def get_screen(self):
         return self.states.peek().get_screen()
 
+    def render(self):
+        self.get_screen().render(self.states.peek())

@@ -9,8 +9,10 @@ from screens.screen import SCREEN_MAIN, SCREEN_UPLOAD_ENDURO_ROUTE
 import time
 from uasyncio import create_task, run, sleep
 from web_server import WebServer
+from xglcd_font import XglcdFont
+from ssd1309 import Display
 
-from machine import Pin, Timer, lightsleep
+from machine import Pin, SPI, Timer, lightsleep
 import network
 # from statemachine.statemachine import StateMachine, State
 from state import State, StateMachine, Transition
@@ -93,8 +95,11 @@ async def main():
     button1 = Pushbutton(pin21)
     button2 = Pushbutton(pin20)
     # button3 = Pushbutton(pin19)
-    
-    main_menu = menu.Menu()
+
+    spi = SPI(1, baudrate=10000000, sck=Pin(14), mosi=Pin(13))
+    display = Display(spi, dc=Pin(4), cs=Pin(5), rst=Pin(2))
+    bally = XglcdFont('fonts/Bally7x9.c', 7, 9)
+    main_menu = menu.Menu(display, {"bally": bally})
 
     button1.press_func(handle_button_press, [buttons.COMMAND_BUTTON_1, main_menu])
 #    button1.double_func(handle_button_1_double_press, {1})

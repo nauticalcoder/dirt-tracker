@@ -5,10 +5,13 @@ SCREEN_INFO_1 = "info-1"
 SCREEN_INFO_2 = "info-2"
 SCREEN_MODE_SELECT = "mode-select"
 
+
 class Screen(object):
 
-    def __init__(self, name):
+    def __init__(self, name, display, fonts):
         self.name = name
+        self.display = display
+        self.fonts = fonts
 
     def __str__(self):
         return f"Screen {self.name}"
