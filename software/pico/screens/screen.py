@@ -16,5 +16,5 @@ class Screen(object):
     def __str__(self):
         return f"Screen {self.name}"
 
-    def render(self, state):
+    def render(self, state, system_state):
         print(f"Screen {self.name}")

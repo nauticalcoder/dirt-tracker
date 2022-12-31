@@ -1,5 +1,6 @@
 from datetime import datetime, time
 from machine import Pin, UART
+import math
 from phew import logging
 from uasyncio import create_task, run, sleep, StreamReader
 
@@ -19,9 +20,11 @@ class GpsData(object):
         self.last_course = None
         self.last_timestamp = None
         self.last_quality = None
-        
+        self.distance_traveled_since_last_update = None
+    
+
 class Gps(object):
-    def __init__(self):
+    def __init__(self, logging = False):
         self.uart = None
         self.task = None
         self.last_latitude = None
@@ -31,10 +34,11 @@ class Gps(object):
         self.last_course = None
         self.last_timestamp = None
         self.last_quality = None
-    
-        self.buffer = bytearray(1000)
-               
-        
+        self.distance_traveled_since_last_update = None
+        self.last_gps_data = None
+        self.logging = logging
+        # self.buffer = bytearray(1000)
+
     async def start(self, queue):
         uart1 = UART(1, BAUD_RATE, tx=Pin(TX_PIN), rx=Pin(RX_PIN), timeout=READ_TIMEOUT_MS)
         print("UART init")
@@ -48,8 +52,21 @@ class Gps(object):
             #print("uart loop")
             #nmea_line_bytes = uart1.readline()
             nmea_line_bytes = await sreader.readline()
-            #print('Recieved', nmea_line_bytes)
-            queue.put(nmea_line_bytes)
+            if self.logging:
+                print('Recieved Bytes', nmea_line_bytes)
+            nmea_line = str(nmea_line_bytes, 'ascii')
+            if self.logging:
+                print('Recieved String', nmea_line)
+            gps_data = self._parse_nmea_line(nmea_line)
+             
+            # Calculate distance traveled
+            if self.last_gps_data:
+                gps_data.distance_traveled_since_last_update = self._calculate_distance_traveled_since_last(gps_data, self.last_gps_data)
+                if self.logging:
+                    print(f"Distance traveled {gps_data.distance_traveled_since_last_update}")
+            
+            self.last_gps_data = gps_data
+            queue.put(gps_data)
 #             
 #             if uart1.any():
 #                 char = uart1.read(1)
@@ -74,7 +91,30 @@ class Gps(object):
     #    self.task.cancel("GPS read task canceled")
     #    self.task = None
     #    self.uart.deinit()
+    def haversine(self, lat1, lon1, lat2, lon2): 
+        # distance between latitudes
+        # and longitudes
+        dLat = (lat2 - lat1) * math.pi / 180.0
+        dLon = (lon2 - lon1) * math.pi / 180.0
+     
+        # convert to radians
+        lat1 = (lat1) * math.pi / 180.0
+        lat2 = (lat2) * math.pi / 180.0
+     
+        # apply formulae
+        a = (pow(math.sin(dLat / 2), 2) +
+             pow(math.sin(dLon / 2), 2) *
+                 math.cos(lat1) * math.cos(lat2));
+        rad = 6371
+        c = 2 * math.asin(math.sqrt(a))
+        return rad * c
 
+    def _calculate_distance_traveled_since_last(self, gps_data, last_gps_data):
+        # Use Haversine to calculate distance traveled from previous reading
+        if not last_gps_data.last_latitude or not last_gps_data.last_longitude or not gps_data.last_latitude or not gps_data.last_longitude:
+            return None
+        return self.haversine(last_gps_data.last_latitude, last_gps_data.last_longitude, gps_data.last_latitude, gps_data.last_longitude) 
+        
     def _parse_time(self, part):
         # 181908.00 is the timestamp (UTC in hours, minutes, and seconds)
         if not part:
@@ -144,15 +184,3 @@ class Gps(object):
             gps_data.longitude = self._parse_longitude(msg_parts[3], msg_parts[4])
             gps_data.timestamp = self._parse_time(msg_parts[5])
         return gps_data
-
-   
-        
-    #async def read_loop(self, uart, queue):
-    #    while True:
-    #        nmea_line_bytes = uart.readline()
-    #        nmea_line = str(nmea_line_bytes, 'ascii')
-    #        if nmea_line:
-    #            print(nmea_line)
-     #           queue.put(nmea_line)                
-               
-        # return self._parse_nmea_line(nmea_line)

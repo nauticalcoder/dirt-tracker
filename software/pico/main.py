@@ -1,19 +1,15 @@
 import buttons
-from gps import Gps
+from services.gps import Gps
 import menu
 from phew import logging
 from pushbutton import Pushbutton
 import queue
 import time
 from uasyncio import create_task, run, sleep
-from web_server import WebServer
 from xglcd_font import XglcdFont
 from ssd1309 import Display
-
-from machine import Pin, SPI, Timer, lightsleep
-import network
-# from statemachine.statemachine import StateMachine, State
-from state import State, StateMachine, Transition
+from machine import Pin, SPI
+from state import SystemState
 
 VERSION = "0.1"
 
@@ -22,17 +18,12 @@ MODE_CIRCUIT = "circuit"
 MODE_ENDURO = "enduro"
 MODE_ENDURO_TIMEKEEPING = "enduro-timekeeping"
 
-
-
-# previous_screen = None
-# current_screen = None
 gps = None
-# current_mode = MODE_RIDE
 
 app_start_ticks = time.ticks_ms()
 gps_queue = queue.Queue()
 command_queue = queue.Queue()
-
+system_state = SystemState()
 
 def initialize():
     global gps
@@ -49,7 +40,7 @@ async def render_loop(main_menu):
         #        web_server.start()
         #elif current_screen.name == SCREEN_MAIN:
         #    current_screen.render()
-        main_menu.render()
+        main_menu.render(system_state)
             
         await sleep(1)     
 
@@ -66,12 +57,12 @@ async def distance_loop():
 
 def handle_button_press(button, menu):
     print(f"Button {button} pressed")
-    menu.handle_input(button, buttons.COMMAND_BUTTON_ACTION_SHORTPRESS)
+    menu.handle_input(button, buttons.COMMAND_BUTTON_ACTION_SHORTPRESS, system_state)
 
 
 def handle_button_long_press(button, menu):
     print(f"Button {button} long pressed")
-    menu.handle_input(button, buttons.COMMAND_BUTTON_ACTION_LONGPRESS)
+    menu.handle_input(button, buttons.COMMAND_BUTTON_ACTION_LONGPRESS, system_state)
 
 
 async def main():
@@ -84,7 +75,7 @@ async def main():
 
     logging.info(f"Dirty Tracker {VERSION} started")
     #initialize()
-    gps = Gps()
+    gps = Gps(logging=False)
     pin21 = Pin(21, Pin.IN, Pin.PULL_DOWN)
     pin20 = Pin(20, Pin.IN, Pin.PULL_DOWN)
     pin19 = Pin(19, Pin.IN, Pin.PULL_DOWN)
