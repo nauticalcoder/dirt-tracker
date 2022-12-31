@@ -85,7 +85,7 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 ~~- GPS read task is blocking~~
 
 ### Todo
-- Convert images to mono format and resize
+- Convert images to mono format and resize - Get Pillow working
 - Add entry and exit transitions to main menu state machine
 - ~~Add rendering of proper screen to state machine~~
 - ~~Add handling of buttons to state machine~~
