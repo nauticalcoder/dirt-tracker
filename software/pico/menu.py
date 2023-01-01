@@ -81,17 +81,16 @@ class InfoMenuState(MenuState):
         self._screens.append(ride_info_1.Info1(display, fonts))
         self._screens.append(ride_info_2.Info2(display, fonts))
 
-        self.current_speed = 0
+        self.current_speed = 14.2
         self.average_speed = 0
-        self.distance_traveled = 0
-
+        self.distance_traveled = 7.8
+        self.elapsed_time = 30
+        
     def _cycle_screen(self):
-        #print(f"Cycle screen B {self._index}")
         self._index += 1
         if self._index >= len(self._screens):
             self._index = 0
-        #print(f"Cycle screen A {self._index}")
-       
+        
     def get_screen(self):
         return self._screens[self._index]
     

@@ -18,6 +18,9 @@ MODE_CIRCUIT = "circuit"
 MODE_ENDURO = "enduro"
 MODE_ENDURO_TIMEKEEPING = "enduro-timekeeping"
 
+SCREEN_WIDTH = 128
+SCREEN_HEIGHT = 64
+
 gps = None
 
 app_start_ticks = time.ticks_ms()
@@ -86,8 +89,6 @@ async def main():
     spi = SPI(1, baudrate=10000000, sck=Pin(10, Pin.OUT), mosi=Pin(11, Pin.OUT))
     display = Display(spi, dc=Pin(8, Pin.OUT), cs=Pin(13, Pin.OUT), rst=Pin(9, Pin.OUT))
     bally = XglcdFont('fonts/Bally7x9.c', 7, 9)
-    display = None
-    bally = None
     main_menu = menu.Menu(display, {"bally": bally})
 
     button1.press_func(handle_button_press, [buttons.COMMAND_BUTTON_1, main_menu])
