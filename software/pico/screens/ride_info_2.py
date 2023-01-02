@@ -20,8 +20,7 @@ class Info2(Screen):
         
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        unit_text = "miles" if system_state.units == UNITS_ENGLISH else "kilometers"
-        print(unit_text)
+        speed_unit_text = "mph" if system_state.units == UNITS_ENGLISH else "kph"
         if not system_state.display:
             return
         #if system_state.wireless:
@@ -35,8 +34,16 @@ class Info2(Screen):
         #elif system_state.battery_level <= 100:
         #    self.display.draw_sprite(self.battery_4_sprite, 108, 1, 20, 20)
             
-        text_height = self.fonts["bally"].height
-        self.display.draw_text(self.display.width, self.display.height // 2 - text_height // 2, str(ride_state.distance_traveled), self.fonts["bally"])
-        self.display.draw_text(0, self.display.height // 2 - text_height // 2, unit_text, self.fonts["bally"])
+        small_text_width = self.fonts["small"].width
+        text_height = self.fonts["medium"].height
+        text_width = self.fonts["medium"].width
+        large_text_width = self.fonts["large"].width
+        
+        # Current speed
+        self.display.draw_text(60, 12, str(ride_state.current_speed), self.fonts["large"])
+        self.display.draw_text(60 + large_text_width * 4, 24, speed_unit_text, self.fonts["small"])
+        self.display.draw_rectangle(58, 12, 70, 22)
+        
         self.display.present()
         pass
+        

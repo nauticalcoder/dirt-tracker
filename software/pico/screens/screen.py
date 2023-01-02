@@ -12,9 +12,20 @@ class Screen(object):
         self.name = name
         self.display = display
         self.fonts = fonts
+        
+        self.display.clear()
 
     def __str__(self):
         return f"Screen {self.name}"
 
     def render(self, state, system_state):
         print(f"Screen {self.name}")
+        
+        if not system_state.display:
+            return
+
+        # Top bar
+        self.display.fill_rectangle(0, 0, 128, 10)
+        
+    def format_time(self, time_delta):
+        return str(time_delta)

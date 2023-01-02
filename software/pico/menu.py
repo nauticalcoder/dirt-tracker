@@ -1,4 +1,5 @@
 import buttons
+from datetime import datetime
 from screens import ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
 import stack
 
@@ -84,7 +85,7 @@ class InfoMenuState(MenuState):
         self.current_speed = 14.2
         self.average_speed = 0
         self.distance_traveled = 7.8
-        self.elapsed_time = 30
+        self.elapsed_time = datetime.timedelta(seconds = 14, minutes = 10)
         
     def _cycle_screen(self):
         self._index += 1

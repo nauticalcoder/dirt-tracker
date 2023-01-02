@@ -37,20 +37,26 @@ class Info1(Screen):
         #    self.display.draw_sprite(self.battery_3_sprite, 108, 1, 20, 20)
         #elif system_state.battery_level <= 100:
         #    self.display.draw_sprite(self.battery_4_sprite, 108, 1, 20, 20)
-              
-        text_height = self.fonts["bally"].height
-        text_width = self.fonts["bally"].width
+        print(self.fonts)
+        small_text_width = self.fonts["small"].width
+        text_height = self.fonts["medium"].height
+        text_width = self.fonts["medium"].width
+        large_text_width = self.fonts["large"].width
         
+        # Top bar
+        #self.display.fill_rectangle(0, 0, 128, 10)
+
         # Current speed
-        self.display.draw_text(80, 20, str(ride_state.current_speed), self.fonts["bally"])
-        self.display.draw_text(80 + text_width * 4, 20, speed_unit_text, self.fonts["bally"])
+        self.display.draw_text(60, 12, str(ride_state.current_speed), self.fonts["large"])
+        self.display.draw_text(60 + large_text_width * 4, 24, speed_unit_text, self.fonts["small"])
+        self.display.draw_rectangle(58, 12, 70, 22)
         
         # Distance traveled
-        self.display.draw_text(50, 50, str(ride_state.distance_traveled), self.fonts["bally"])
-        self.display.draw_text(50 + text_width * 3, 50, distance_unit_text, self.fonts["bally"])
+        self.display.draw_text(35, 50, str(ride_state.distance_traveled), self.fonts["medium"])
+        self.display.draw_text(35 + text_width * 3, 50, distance_unit_text, self.fonts["small"])
         
         # Elapsed time
-        self.display.draw_text(10, 25, str(ride_state.elapsed_time), self.fonts["bally"])
+        self.display.draw_text(5, 25, self.format_time(ride_state.elapsed_time), self.fonts["medium"])
         #self.display.draw_text(30, 25 - text_height // 2, unit_text, self.fonts["bally"])
         
         self.display.present()

@@ -5,7 +5,7 @@ CONFIGURATION_SELECT = "configuration-select"
 
 class ConfigurationSelect(Screen):
     
-    def __init__(self, fonts, display):
+    def __init__(self, display, fonts):
         super().__init__(CONFIGURATION_SELECT, display, fonts)
         pass
         

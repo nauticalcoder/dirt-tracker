@@ -5,7 +5,7 @@ CONFIGURATION_SET_UNITS = "configuration-set-units"
 
 class ConfigurationSetUnits(Screen):
     
-    def __init__(self, fonts, display):
+    def __init__(self, display, fonts):
         super().__init__(CONFIGURATION_SET_UNITS, display, fonts)
         pass
     

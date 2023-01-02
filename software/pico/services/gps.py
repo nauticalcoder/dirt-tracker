@@ -1,8 +1,8 @@
-from datetime import datetime, time
+import datetime
 from machine import Pin, UART
 import math
 from phew import logging
-from uasyncio import create_task, run, sleep, StreamReader
+from uasyncio import StreamReader
 
 BAUD_RATE = 9600
 READ_TIMEOUT_MS = 1000

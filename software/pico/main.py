@@ -88,8 +88,10 @@ async def main():
 
     spi = SPI(1, baudrate=10000000, sck=Pin(10, Pin.OUT), mosi=Pin(11, Pin.OUT))
     display = Display(spi, dc=Pin(8, Pin.OUT), cs=Pin(13, Pin.OUT), rst=Pin(9, Pin.OUT))
+    bally_small = XglcdFont('fonts/Bally5x8.c', 5, 8)
     bally = XglcdFont('fonts/Bally7x9.c', 7, 9)
-    main_menu = menu.Menu(display, {"bally": bally})
+    unispace = XglcdFont('fonts/Unispace12x24.c', 12, 24)
+    main_menu = menu.Menu(display, {"small": bally_small, "medium": bally, "large": unispace})
 
     button1.press_func(handle_button_press, [buttons.COMMAND_BUTTON_1, main_menu])
 #    button1.double_func(handle_button_1_double_press, {1})
