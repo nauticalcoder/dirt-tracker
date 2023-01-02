@@ -1,6 +1,6 @@
 import buttons
 from datetime import datetime
-from screens import about, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
+from screens import about, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
 import stack
 
 MENU_STATE_INFO = "info"
@@ -130,7 +130,7 @@ class ConfigurationMenuState(MenuState):
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 2 - Select
             switch = {
-                0: None,  # TODO figure out how to initiate secondary FSM for each mode - Load Route Sheet,
+                0: LoadRouteSheetMenuState(self.display, self.fonts),
                 1: None,  # TODO figure out how to initiate secondary FSM for each mode - Set Wheel Size,
                 2: SetUnitsMenuState(self.display, self.fonts),  # TODO figure out how to initiate secondary FSM for each mode - Set Units,
                 3: AboutMenuState(self.display, self.fonts),
@@ -149,10 +149,17 @@ class LoadRouteSheetMenuState(MenuState):
     def __init__(self, display, fonts):
         super().__init__(display, fonts)
         self.value = MENU_STATE_LOAD_ROUTE_SHEET
+        self._index = 0
+        self._screens.append(load_route.LoadRoute(display, fonts))
         self.selected_menu_item = 0
 
+    def get_screen(self):
+        return self._screens[self._index]
+    
     def handle_input(self, button, action, system_state):
-        MenuState.handle_input(self, button, action, system_state)
+        super().handle_input(button, action, system_state)
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            return Pop(self.display)
         pass
 
 

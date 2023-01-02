@@ -86,17 +86,19 @@ Once we have all of the hardware in hand and wired up, we will design a case for
 
 ### Todo
 - Convert images to mono format and resize - Get Pillow working
+- Create tiny font
 - Add entry and exit transitions to main menu state machine
 - ~~Add rendering of proper screen to state machine~~
 - ~~Add handling of buttons to state machine~~
-- Add some switches to the breadboard for testing the UI
+- ~~Add some switches to the breadboard for testing the UI~~
 - ~~Define button interaction~~
 - ~~Handle multiple screens and switching between them~~
 - Handle executing tasks from a screen
 - Add events for circuit mode: start, stop, lap
 - Add background process to track distance traveled, calculate speed, lap time, avg lap time, overall time, Haversine method (https://maker.pro/forums/threads/calculating-distance-using-gps.119820/)
 - Wireup breadboard so this can be tested more easily with buttons and walked outside
-- Wire up display
+- ~~Wire up display~~
+- Wire up webserver and wifi to Load Route screen
 - 
 ![Alt text](https://github.com/nauticalcoder/dirt-tracker/blob/master/20221219_153224.jpg "Debugging setup")
 
