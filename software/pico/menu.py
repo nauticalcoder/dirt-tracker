@@ -1,6 +1,6 @@
 import buttons
 from datetime import datetime
-from screens import about, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
+from screens import about, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units, configuration_set_wheel_size 
 import stack
 
 MENU_STATE_INFO = "info"
@@ -8,10 +8,14 @@ MENU_STATE_CHANGE_MODES = "change-modes"
 MENU_STATE_CONFIGURATION = "configuration"
 MENU_STATE_LOAD_ROUTE_SHEET = "load-route-sheet"
 MENU_STATE_SET_UNITS = "set-units"
+MENU_STATE_WHEEL_SIZE = "wheel-size"
 MENU_STATE_ABOUT = "about"
 
 UNITS_ENGLISH = 1
 UNITS_METRIC = 2
+WHEEL_SIZE_MINUMUM = 16.0
+WHEEL_SIZE_MAXIMUM = 20.0
+WHEEL_SIZE_INCREMENT = 0.2
 
 # class MenuItem(object):
 #     def __init__(self, name):
@@ -131,8 +135,8 @@ class ConfigurationMenuState(MenuState):
             # Button 2 - Select
             switch = {
                 0: LoadRouteSheetMenuState(self.display, self.fonts),
-                1: None,  # TODO figure out how to initiate secondary FSM for each mode - Set Wheel Size,
-                2: SetUnitsMenuState(self.display, self.fonts),  # TODO figure out how to initiate secondary FSM for each mode - Set Units,
+                1: SetWheelSizeMenuState(self.display, self.fonts),
+                2: SetUnitsMenuState(self.display, self.fonts),
                 3: AboutMenuState(self.display, self.fonts),
                 4: Pop(self.display)
             }
@@ -184,6 +188,27 @@ class SetUnitsMenuState(MenuState):
             return Pop(self.display)
         pass
 
+class SetWheelSizeMenuState(MenuState):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
+        self.value = MENU_STATE_WHEEL_SIZE
+        self._screens.append(configuration_set_wheel_size.ConfigurationSetWheelSize(display, fonts))
+    
+    def get_screen(self):
+        return self._screens[0]
+    
+    def handle_input(self, button, action, system_state):
+        super().handle_input(button, action, system_state)
+        if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            # Button 1 - increment wheel size
+            system_state.wheel_size += WHEEL_SIZE_INCREMENT
+            if system_state.wheel_size > WHEEL_SIZE_MAXIMUM:
+                system_state.wheel_size = WHEEL_SIZE_MINUMUM
+                
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            return Pop(self.display)
+        pass
+    
 class AboutMenuState(MenuState):
     def __init__(self, display, fonts):
         super().__init__(display, fonts)
