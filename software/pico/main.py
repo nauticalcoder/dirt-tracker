@@ -11,6 +11,7 @@ from ssd1309 import Display
 from machine import Pin, SPI
 from state import SystemState
 
+APP_NAME = "Dirt Tracker"
 VERSION = "0.1"
 
 MODE_RIDE = "ride"

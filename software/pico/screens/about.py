@@ -2,15 +2,18 @@ from screens.screen import Screen
 import lib.ssd1309
 
 
-SCREEN_INFO_1 = "info-1"
+SCREEN_ABOUT = "about"
 
-UNITS_ENGLISH = 1
-UNITS_METRIC = 2
+APP_NAME = "Dirt Tracker"
+VERSION = "0.1"
+SCREEN_WIDTH = 128
+SCREEN_HEIGHT = 64
 
-class Info1(Screen):
+
+class About(Screen):
     
     def __init__(self, display, fonts):
-        super().__init__(SCREEN_INFO_1, display, fonts)
+        super().__init__(SCREEN_ABOUT, display, fonts)
         if not display:
             return
         # Setup sprites
@@ -22,9 +25,7 @@ class Info1(Screen):
 
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        speed_unit_text = "mph" if system_state.units == UNITS_ENGLISH else "kph"
-        distance_unit_text = "miles" if system_state.units == UNITS_ENGLISH else "kms"
-        
+
         if not system_state.display:
             return
         #if system_state.wireless:
@@ -42,21 +43,12 @@ class Info1(Screen):
         text_width = self.fonts["medium"].width
         large_text_width = self.fonts["large"].width
         
-        # Top bar
-        #self.display.fill_rectangle(0, 0, 128, 10)
-
-        # Current speed
-        self.display.draw_text(60, 12, str(ride_state.current_speed), self.fonts["large"])
-        self.display.draw_text(60 + large_text_width * 4, 24, speed_unit_text, self.fonts["small"])
-        self.display.draw_rectangle(58, 12, 70, 22)
-        
-        # Distance traveled
-        self.display.draw_text(35, 50, str(ride_state.distance_traveled), self.fonts["medium"])
-        self.display.draw_text(35 + text_width * 3, 50, distance_unit_text, self.fonts["small"])
-        
-        # Elapsed time
-        self.display.draw_text(5, 25, self.format_time(ride_state.elapsed_time), self.fonts["medium"])
-        #self.display.draw_text(30, 25 - text_height // 2, unit_text, self.fonts["bally"])
+        self.display.draw_text(10, 12, APP_NAME, self.fonts["small"])
+        self.display.draw_text(10, 22, f"Version {VERSION}", self.fonts["small"])
+        self.display.draw_text(10, 32, f"Display {SCREEN_WIDTH}x{SCREEN_HEIGHT}", self.fonts["small"])
+        self.display.draw_text(10, 42, f"(c) 2023", self.fonts["small"])        
+        self.display.draw_text(10, 52, f"Iron Goat Software", self.fonts["small"])
         
         self.display.present()
         pass
+

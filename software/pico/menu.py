@@ -1,6 +1,6 @@
 import buttons
 from datetime import datetime
-from screens import ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
+from screens import about, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units
 import stack
 
 MENU_STATE_INFO = "info"
@@ -8,6 +8,7 @@ MENU_STATE_CHANGE_MODES = "change-modes"
 MENU_STATE_CONFIGURATION = "configuration"
 MENU_STATE_LOAD_ROUTE_SHEET = "load-route-sheet"
 MENU_STATE_SET_UNITS = "set-units"
+MENU_STATE_ABOUT = "about"
 
 UNITS_ENGLISH = 1
 UNITS_METRIC = 2
@@ -60,7 +61,7 @@ class ChangeModesMenuState(MenuState):
                 1: None,  # TODO figure out how to initiate secondary FSM for each mode - Circuit Mode,
                 2: None,  # TODO figure out how to initiate secondary FSM for each mode - Enduro Mode,
                 3: ConfigurationMenuState(self.display, self.fonts),
-                4: Pop()
+                4: Pop(self.display)
             }
             return switch[self.selected_menu_item]
         pass
@@ -109,7 +110,7 @@ class InfoMenuState(MenuState):
 
 
 class ConfigurationMenuState(MenuState):
-    menu_items = ["Load Route Sheet", "Set Wheel Size", "Set Units", "Back"]
+    menu_items = ["Load Route Sheet", "Set Wheel Size", "Set Units", "About", "Back"]
    
     def __init__(self, display, fonts):
         super().__init__(display, fonts)
@@ -132,7 +133,8 @@ class ConfigurationMenuState(MenuState):
                 0: None,  # TODO figure out how to initiate secondary FSM for each mode - Load Route Sheet,
                 1: None,  # TODO figure out how to initiate secondary FSM for each mode - Set Wheel Size,
                 2: SetUnitsMenuState(self.display, self.fonts),  # TODO figure out how to initiate secondary FSM for each mode - Set Units,
-                3: Pop()
+                3: AboutMenuState(self.display, self.fonts),
+                4: Pop(self.display)
             }
             return switch[self.selected_menu_item]
         pass
@@ -172,11 +174,27 @@ class SetUnitsMenuState(MenuState):
             else:
                 system_state.units = UNITS_ENGLISH
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
-            return Pop()
+            return Pop(self.display)
         pass
 
+class AboutMenuState(MenuState):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
+        self.value = MENU_STATE_ABOUT
+        self._screens.append(about.About(display, fonts))
+    
+    def get_screen(self):
+        return self._screens[0]
+    
+    def handle_input(self, button, action, system_state):
+        super().handle_input(button, action, system_state)
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            return Pop(self.display)
+        pass
+    
 class Pop(MenuState):
-    def __init__(self):
+    def __init__(self, display):
+        display.clear()
         pass
 
 
