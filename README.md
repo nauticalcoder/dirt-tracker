@@ -7,12 +7,12 @@ Raspberry Pi Pico W (https://www.raspberrypi.com/products/raspberry-pi-pico/)
 GPS module (https://www.adafruit.com/product/746)
 
 Pico 	
-|Pico |GPS Module  | |
---- | --- | ---|
-|6 - TX|RX|Using UART1 on the Pico|
-|7 - RX|TX||
-|36 - +3.3V|VIN||
-|18 - GND|GND||
+| Pico         | GPS Module  |                          |
+|:------------:|:-----------:|:------------------------:|
+| 6 - TX       | RX          | Using UART1 on the Pico  |
+| 7 - RX       |TX           |                          |
+| 36 - +3.3V   |VIN          |                          |
+| 18 - GND     |GND          |                          |
 
 
 ### Display
