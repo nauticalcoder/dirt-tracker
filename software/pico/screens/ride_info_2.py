@@ -20,7 +20,7 @@ class Info2(Screen):
         
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        speed_unit_text = "mph" if system_state.units == UNITS_ENGLISH else "kph"
+        speed_unit_text = "mph" if system_state.get_units() == UNITS_ENGLISH else "kph"
         if not system_state.display:
             return
         #if system_state.wireless:

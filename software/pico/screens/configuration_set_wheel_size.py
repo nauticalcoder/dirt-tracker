@@ -14,7 +14,7 @@ class ConfigurationSetWheelSize(Screen):
         if not system_state.display:
             return
         
-        self.display.draw_text(55, 30, f"{system_state.wheel_size:.1f}", self.fonts["small"])
+        self.display.draw_text(55, 30, f"{system_state.get_wheel_size():.1f}", self.fonts["small"])
         self.display.present()
         pass
         

@@ -1,13 +1,9 @@
+import constants
 from screens.screen import Screen
 import lib.ssd1309
 
 
 SCREEN_ABOUT = "about"
-
-APP_NAME = "Dirt Tracker"
-VERSION = "0.1"
-SCREEN_WIDTH = 128
-SCREEN_HEIGHT = 64
 
 
 class About(Screen):
@@ -43,9 +39,9 @@ class About(Screen):
         text_width = self.fonts["medium"].width
         large_text_width = self.fonts["large"].width
         
-        self.display.draw_text(10, 12, APP_NAME, self.fonts["small"])
-        self.display.draw_text(10, 22, f"Version {VERSION}", self.fonts["small"])
-        self.display.draw_text(10, 32, f"Display {SCREEN_WIDTH}x{SCREEN_HEIGHT}", self.fonts["small"])
+        self.display.draw_text(10, 12, constants.APP_NAME, self.fonts["small"])
+        self.display.draw_text(10, 22, f"Version {constants.VERSION}", self.fonts["small"])
+        self.display.draw_text(10, 32, f"Display {constants.SCREEN_WIDTH}x{constants.SCREEN_HEIGHT}", self.fonts["small"])
         self.display.draw_text(10, 42, f"(c) 2023", self.fonts["small"])        
         self.display.draw_text(10, 52, f"Iron Goat Software", self.fonts["small"])
         

@@ -19,7 +19,8 @@ class Screen(object):
         return f"Screen {self.name}"
 
     def render(self, state, system_state):
-        print(f"Screen {self.name}")
+        
+        #print(f"Screen {self.name}")
         
         if not system_state.display:
             return

@@ -22,7 +22,7 @@ class Info1(Screen):
 
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        unit_text = "mph" if system_state.units == UNITS_ENGLISH else "kph"
+        unit_text = "mph" if system_state.get_units() == UNITS_ENGLISH else "kph"
         print(unit_text)
         if not system_state.display:
             return

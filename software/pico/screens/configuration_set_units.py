@@ -1,3 +1,4 @@
+import constants
 from screens.screen import Screen
 
 CONFIGURATION_SET_UNITS = "configuration-set-units"
@@ -11,14 +12,12 @@ class ConfigurationSetUnits(Screen):
     
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        print(f"Units: {system_state.units}")
         if not system_state.display:
             return
         
-        text_height = self.fonts["small"].height
-        unit_text = "English" if system_state.units == UNITS_ENGLISH else "Metric"
-        self.display.draw_text(self.display.width, self.display.height // 2 - text_height // 2, unit_text, self.fonts["small"])
-        self.present()
+        unit_text = "English  " if system_state.get_units() == constants.UNITS_ENGLISH else "Metric  "
+        self.display.draw_text(50, 30, unit_text, self.fonts["small"])
+        self.display.present()
         pass
         
 

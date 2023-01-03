@@ -1,7 +1,9 @@
 import buttons
+import constants
 from datetime import datetime
 from screens import about, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units, configuration_set_wheel_size 
 import stack
+from services import web_server
 
 MENU_STATE_INFO = "info"
 MENU_STATE_CHANGE_MODES = "change-modes"
@@ -10,12 +12,6 @@ MENU_STATE_LOAD_ROUTE_SHEET = "load-route-sheet"
 MENU_STATE_SET_UNITS = "set-units"
 MENU_STATE_WHEEL_SIZE = "wheel-size"
 MENU_STATE_ABOUT = "about"
-
-UNITS_ENGLISH = 1
-UNITS_METRIC = 2
-WHEEL_SIZE_MINUMUM = 16.0
-WHEEL_SIZE_MAXIMUM = 20.0
-WHEEL_SIZE_INCREMENT = 0.2
 
 # class MenuItem(object):
 #     def __init__(self, name):
@@ -28,6 +24,9 @@ class MenuState(object):
         self._screen = None
         self.display = display
         self.fonts = fonts
+        pass
+    
+    async def initialize(self):
         pass
     
     def handle_input(self, button, action, system_state):
@@ -135,8 +134,8 @@ class ConfigurationMenuState(MenuState):
             # Button 2 - Select
             switch = {
                 0: LoadRouteSheetMenuState(self.display, self.fonts),
-                1: SetWheelSizeMenuState(self.display, self.fonts),
-                2: SetUnitsMenuState(self.display, self.fonts),
+                2: SetWheelSizeMenuState(self.display, self.fonts),
+                1: SetUnitsMenuState(self.display, self.fonts),
                 3: AboutMenuState(self.display, self.fonts),
                 4: Pop(self.display)
             }
@@ -156,13 +155,22 @@ class LoadRouteSheetMenuState(MenuState):
         self._index = 0
         self._screens.append(load_route.LoadRoute(display, fonts))
         self.selected_menu_item = 0
-
+        self.web_server = web_server.WebServer()
+        
+        
+    async def initialize(self):
+        await self.web_server.start()
+        print("__init__ Web server started")
+        
     def get_screen(self):
+        print("get_screen")
         return self._screens[self._index]
     
     def handle_input(self, button, action, system_state):
         super().handle_input(button, action, system_state)
+        print("handle_input")
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            self.web_server.stop()
             return Pop(self.display)
         pass
 
@@ -180,10 +188,10 @@ class SetUnitsMenuState(MenuState):
         super().handle_input(button, action, system_state)
         if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 1 - Next unit
-            if system_state.units == UNITS_ENGLISH:
-                system_state.units = UNITS_METRIC
+            if system_state.get_units() == constants.UNITS_ENGLISH:
+                system_state.set_units(constants.UNITS_METRIC)
             else:
-                system_state.units = UNITS_ENGLISH
+                system_state.set_units(constants.UNITS_ENGLISH)
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             return Pop(self.display)
         pass
@@ -201,9 +209,9 @@ class SetWheelSizeMenuState(MenuState):
         super().handle_input(button, action, system_state)
         if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             # Button 1 - increment wheel size
-            system_state.wheel_size += WHEEL_SIZE_INCREMENT
-            if system_state.wheel_size > WHEEL_SIZE_MAXIMUM:
-                system_state.wheel_size = WHEEL_SIZE_MINUMUM
+            system_state.set_wheel_size(system_state.get_wheel_size() + constants.WHEEL_SIZE_INCREMENT)
+            if  system_state.get_wheel_size() > constants.WHEEL_SIZE_MAXIMUM:
+                system_state.set_wheel_size(constants.WHEEL_SIZE_MINUMUM)
                 
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             return Pop(self.display)
