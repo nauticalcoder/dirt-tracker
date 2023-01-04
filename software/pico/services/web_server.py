@@ -1,9 +1,9 @@
+import constants
 from phew import access_point, dns, logging, server
 from phew.template import render_template
 from phew.server import redirect
 
 DOMAIN = "pico.wireless"
-SSID = "dirt-tracker"
 
 
 @server.route("/", methods=['GET'])
@@ -33,14 +33,18 @@ class WebServer(object):
         self.dns = None
 
     def start(self):
-        logging.info(f"SSID {SSID}")
+        logging.info(f"SSID {constants.SSID}")
 
-        self.ap = access_point(SSID)
+        self.ap = access_point(constants.SSID)
         self.ip = self.ap.ifconfig()[0]
         logging.info(f"Starting DNS server on {self.ip}")
         dns.run_catchall(self.ip)
         server.run()
+        
         logging.info("Webserver started")
 
     def stop(self):
         server.shutdown()
+        logging.info("Webserver shutdown")
+        self.ap.active(False)
+        logging.info("Access point shutdown")

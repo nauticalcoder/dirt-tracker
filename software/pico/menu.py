@@ -156,19 +156,16 @@ class LoadRouteSheetMenuState(MenuState):
         self._screens.append(load_route.LoadRoute(display, fonts))
         self.selected_menu_item = 0
         self.web_server = web_server.WebServer()
-        
-        
-    async def initialize(self):
-        await self.web_server.start()
-        print("__init__ Web server started")
+        self.web_server.start()
+        print("__init__ Web server started")        
         
     def get_screen(self):
-        print("get_screen")
+        #print("get_screen")
         return self._screens[self._index]
     
     def handle_input(self, button, action, system_state):
         super().handle_input(button, action, system_state)
-        print("handle_input")
+        #print("handle_input")
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
             self.web_server.stop()
             return Pop(self.display)

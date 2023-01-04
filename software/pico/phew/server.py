@@ -3,8 +3,9 @@ from . import logging
 
 _routes = []
 catchall_handler = None
-loop = None
-
+#loop = None
+server = None
+task = None
 
 def file_exists(filename):
   try:
@@ -348,17 +349,25 @@ def serve_file(file):
   return FileResponse(file)
 
 
+async def _start_server(handle_request, host, port):
+    global server
+    server = uasyncio.start_server(handle_request, host, port)
+    
+    
 def run(host = "0.0.0.0", port = 80):
-  global loop
+  global server, task
   logging.info("> starting web server on port {}".format(port))
 
-  loop = uasyncio.get_event_loop()
-  loop.create_task(uasyncio.start_server(_handle_request, host, port))
-  loop.run_forever()
+  #loop = uasyncio.get_event_loop()
+  #task = uasyncio.create_task(_start_server(_handle_request, host, port))
+  task = uasyncio.create_task(_start_server(_handle_request, host, port))
+  #server = await uasyncio.start_server(_handle_request, host, port)
+  #loop.run_forever()
 
 
 def shutdown():
   logging.info("> shutting down web server")
-  # loop.stop()
+  server.close()
+  task.cancel()
 
 
