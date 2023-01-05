@@ -15,6 +15,8 @@ class SystemState(object):
         self.gps_enabled = True
         self.bluetooth_enabled = False
         
+        self.odometer_lifetime = 0.0
+        
     def set_units(self, units):
         self._units = units
         # Persist to fs

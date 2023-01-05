@@ -1,3 +1,4 @@
+from gadgets.status_bar import StatusBar
 
 SCREEN_UPLOAD_ENDURO_ROUTE = "upload_enduro_route"
 SCREEN_MAIN = "main"
@@ -24,9 +25,9 @@ class Screen(object):
         
         if not system_state.display:
             return
-
-        # Top bar
-        self.display.fill_rectangle(0, 0, 128, 10)
+        
+        StatusBar(self.display, self.fonts).render(system_state)
+        
         
     def format_time(self, time_delta):
         return str(time_delta)
