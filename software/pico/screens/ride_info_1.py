@@ -20,6 +20,9 @@ class Info1(Screen):
         #self.battery_3_sprite = display.load_sprite(f"sprites/battery_3.mono", 20, 20, invert=True)
         #self.battery_4_sprite = display.load_sprite(f"sprites/battery_4.mono", 20, 20, invert=True)
 
+    def clear(self):
+        self.display.clear()
+        
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
         speed_unit_text = "mph" if system_state.get_units() == UNITS_ENGLISH else "kph"

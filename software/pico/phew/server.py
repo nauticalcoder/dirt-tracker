@@ -351,19 +351,17 @@ def serve_file(file):
 
 async def _start_server(handle_request, host, port):
     global server
-    server = uasyncio.start_server(handle_request, host, port)
+    print("_start_server 1")
+    server = await uasyncio.start_server(handle_request, host, port)
+    print("_start_server 2")
+    print(server)
     
     
 def run(host = "0.0.0.0", port = 80):
-  global server, task
-  logging.info("> starting web server on port {}".format(port))
-
-  #loop = uasyncio.get_event_loop()
-  #task = uasyncio.create_task(_start_server(_handle_request, host, port))
-  task = uasyncio.create_task(_start_server(_handle_request, host, port))
-  #server = await uasyncio.start_server(_handle_request, host, port)
-  #loop.run_forever()
-
+    global server, task
+    logging.info("> starting web server on port {}".format(port))
+    task = uasyncio.create_task(_start_server(_handle_request, host, port))
+    
 
 def shutdown():
   logging.info("> shutting down web server")

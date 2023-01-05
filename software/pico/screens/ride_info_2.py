@@ -1,3 +1,4 @@
+from gadgets.late_early_bar import LateEarlyBar
 from screens.screen import Screen
 
 SCREEN_INFO_2 = "info-2"
@@ -17,7 +18,10 @@ class Info2(Screen):
         #self.battery_2_sprite = display.load_sprite(f"sprites/battery_2.mono", 20, 20, invert=True)
         #self.battery_3_sprite = display.load_sprite(f"sprites/battery_3.mono", 20, 20, invert=True)
         #self.battery_4_sprite = display.load_sprite(f"sprites/battery_4.mono", 20, 20, invert=True)
-        
+    
+    def clear(self):
+        self.display.clear()
+      
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
         speed_unit_text = "mph" if system_state.get_units() == UNITS_ENGLISH else "kph"
@@ -40,9 +44,11 @@ class Info2(Screen):
         large_text_width = self.fonts["large"].width
         
         # Current speed
-        self.display.draw_text(60, 12, str(ride_state.current_speed), self.fonts["large"])
-        self.display.draw_text(60 + large_text_width * 4, 24, speed_unit_text, self.fonts["small"])
-        self.display.draw_rectangle(58, 12, 70, 22)
+        #self.display.draw_text(60, 12, str(ride_state.current_speed), self.fonts["large"])
+        #self.display.draw_text(60 + large_text_width * 4, 24, speed_unit_text, self.fonts["small"])
+        #self.display.draw_rectangle(58, 12, 70, 22)
+        
+        LateEarlyBar().render(self.display, -10, 20, 52, 90)
         
         self.display.present()
         pass

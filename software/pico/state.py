@@ -12,6 +12,9 @@ class SystemState(object):
         self._units = UNITS_ENGLISH
         self._wheel_size = 21.0
         
+        self.gps_enabled = True
+        self.bluetooth_enabled = False
+        
     def set_units(self, units):
         self._units = units
         # Persist to fs

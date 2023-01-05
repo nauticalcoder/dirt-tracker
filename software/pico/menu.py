@@ -95,6 +95,7 @@ class InfoMenuState(MenuState):
         self._index += 1
         if self._index >= len(self._screens):
             self._index = 0
+        self._screens[self._index].clear()
         
     def get_screen(self):
         return self._screens[self._index]
