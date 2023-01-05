@@ -1,11 +1,9 @@
+import constants
 from screens.screen import Screen
 import lib.ssd1309
 
 
-SCREEN_INFO_1 = "info-1"
-
-UNITS_ENGLISH = 1
-UNITS_METRIC = 2
+SCREEN_INFO_1 = "ride-info-1"
 
 class Info1(Screen):
     
@@ -21,8 +19,8 @@ class Info1(Screen):
         
     def render(self, ride_state, system_state):
         super().render(ride_state, system_state)
-        speed_unit_text = "mph" if system_state.get_units() == UNITS_ENGLISH else "kph"
-        distance_unit_text = "miles" if system_state.get_units() == UNITS_ENGLISH else "kms"
+        speed_unit_text = "mph" if system_state.get_units() == constants.UNITS_ENGLISH else "kph"
+        distance_unit_text = "miles" if system_state.get_units() == constants.UNITS_ENGLISH else "kms"
         
         if not system_state.display:
             return

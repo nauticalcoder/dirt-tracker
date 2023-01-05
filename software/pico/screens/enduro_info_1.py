@@ -3,13 +3,13 @@ from screens.screen import Screen
 import lib.ssd1309
 
 
-SCREEN_CIRCUIT_INFO_1 = "circuit-info-1"
+SCREEN_ENDURO_INFO_1 = "enduro-info-1"
 
 
-class CircuitInfo1(Screen):
+class EnduroInfo1(Screen):
     
     def __init__(self, display, fonts):
-        super().__init__(SCREEN_CIRCUIT_INFO_1, display, fonts)
+        super().__init__(SCREEN_ENDURO_INFO_1, display, fonts)
         if not display:
             return
         # Setup sprites
@@ -32,9 +32,8 @@ class CircuitInfo1(Screen):
         large_text_width = self.fonts["large"].width
         
         # Current speed
-        self.display.draw_text(60, 12, "Circuit 1", self.fonts["medium"])
+        self.display.draw_text(60, 12, "Enduro 1", self.fonts["medium"])
 
         self.display.present()
         pass
-
 

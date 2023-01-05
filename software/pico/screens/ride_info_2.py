@@ -1,7 +1,7 @@
 from gadgets.late_early_bar import LateEarlyBar
 from screens.screen import Screen
 
-SCREEN_INFO_2 = "info-2"
+SCREEN_INFO_2 = "ride-info-2"
 
 UNITS_ENGLISH = 1
 UNITS_METRIC = 2

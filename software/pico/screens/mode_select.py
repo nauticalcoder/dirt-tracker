@@ -5,9 +5,10 @@ SCREEN_MODE_SELECT = "mode-select"
 
 class ModeSelect(Screen):
     
-    def __init__(self, display, fonts):
+    def __init__(self, display, fonts, previous_state):
         super().__init__(SCREEN_MODE_SELECT, display, fonts)
-    
+        self.previous_state = previous_state
+        
     def render(self, menu_state, system_state):
         super().render(menu_state, system_state)
         if not system_state.display:

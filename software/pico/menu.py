@@ -1,11 +1,13 @@
 import buttons
 import constants
 from datetime import datetime
-from screens import about, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units, configuration_set_wheel_size 
+from screens import about, circuit_info_1, circuit_info_2, enduro_info_1, enduro_info_2, load_route, ride_info_1, ride_info_2, mode_select, configuration_select, configuration_set_units, configuration_set_wheel_size 
 import stack
 from services import web_server
 
 MENU_STATE_INFO = "info"
+MENU_STATE_CIRCUIT_RACE = "circuit-race"
+MENU_STATE_ENDURO_RACE = "enduro-race"
 MENU_STATE_CHANGE_MODES = "change-modes"
 MENU_STATE_CONFIGURATION = "configuration"
 MENU_STATE_LOAD_ROUTE_SHEET = "load-route-sheet"
@@ -17,13 +19,14 @@ MENU_STATE_ABOUT = "about"
 #     def __init__(self, name):
 #         items = []
 
-class MenuState(object):
+class MenuState(object,):
     def __init__(self, display, fonts):
         self.value = None
         self._screens = []
         self._screen = None
         self.display = display
         self.fonts = fonts
+        
         pass
     
     async def initialize(self):
@@ -42,12 +45,13 @@ class ChangeModesMenuState(MenuState):
     # Get these from the screen
     menu_items = ["Ride Mode", "Start Circuit Race", "Start Enduro Race", "Configuration", "Back"]
     
-    def __init__(self, display, fonts):
+    def __init__(self, display, fonts, previous_state):
         super().__init__(display, fonts)
         self.value = MENU_STATE_CHANGE_MODES
         self.selected_menu_item = 0
         self._index = 0
-        self._screens.append(mode_select.ModeSelect(display, fonts))
+        self._screens.append(mode_select.ModeSelect(display, fonts, previous_state))
+        self.previous_state = previous_state
         
     def get_screen(self):
         return self._screens[self._index]
@@ -61,8 +65,8 @@ class ChangeModesMenuState(MenuState):
             # Button 2 - Select
             switch = {
                 0: None,  # TODO figure out how to initiate secondary FSM for each mode - Ride Mode,
-                1: None,  # TODO figure out how to initiate secondary FSM for each mode - Circuit Mode,
-                2: None,  # TODO figure out how to initiate secondary FSM for each mode - Enduro Mode,
+                1: CircuitRaceMenuState(self.display, self.fonts), 
+                2: EnduroRaceMenuState(self.display, self.fonts),
                 3: ConfigurationMenuState(self.display, self.fonts),
                 4: Pop(self.display)
             }
@@ -109,8 +113,104 @@ class InfoMenuState(MenuState):
             self._cycle_screen()
         if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_LONGPRESS:
             # Button 2 Long Press - Change Modes
-            return ChangeModesMenuState(self.display, self.fonts)
+            return ChangeModesMenuState(self.display, self.fonts, self)
         pass
+
+
+class InfoMenuState(MenuState):
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
+        self.value = MENU_STATE_INFO
+        self._index = 0
+        #self._screens = []
+        self._screens.append(ride_info_1.Info1(display, fonts))
+        self._screens.append(ride_info_2.Info2(display, fonts))
+
+        self.current_speed = 14.2
+        self.average_speed = 0
+        self.distance_traveled = 7.8
+        self.elapsed_time = datetime.timedelta(seconds = 14, minutes = 10)
+        
+    def _cycle_screen(self):
+        self._index += 1
+        if self._index >= len(self._screens):
+            self._index = 0
+        self._screens[self._index].clear()
+        
+    def get_screen(self):
+        return self._screens[self._index]
+    
+    def handle_input(self, button, action, system_state):
+        super().handle_input(button, action, system_state)
+        #print(f"Handle input InfoMenuState {button} {action}")
+        #print(f"Handle input InfoMenuState {buttons.COMMAND_BUTTON_1} {buttons.COMMAND_BUTTON_ACTION_SHORTPRESS}")
+        if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            # Button 1 - Cycle
+            self._cycle_screen()
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_LONGPRESS:
+            # Button 2 Long Press - Change Modes
+            return ChangeModesMenuState(self.display, self.fonts, self)
+        pass
+
+
+class CircuitRaceMenuState(MenuState):
+    
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
+        self.value = MENU_STATE_CIRCUIT_RACE
+        self.selected_menu_item = 0
+        self._index = 0
+        self._screens.append(circuit_info_1.CircuitInfo1(display, fonts))
+        self._screens.append(circuit_info_2.CircuitInfo2(display, fonts))
+
+    def get_screen(self):
+        return self._screens[self._index]
+    
+    def handle_input(self, button, action, system_state):
+        super().handle_input(button, action, system_state)
+        if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            # Button 1 - Cycle
+            self._cycle_screen()
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_LONGPRESS:
+            # Button 2 Long Press - Change Modes
+            return ChangeModesMenuState(self.display, self.fonts, self)
+        pass
+
+    def _cycle_screen(self):
+        self._index += 1
+        if self._index >= len(self._screens):
+            self._index = 0
+        self._screens[self._index].clear()
+
+
+class EnduroRaceMenuState(MenuState):
+    
+    def __init__(self, display, fonts):
+        super().__init__(display, fonts)
+        self.value = MENU_STATE_ENDURO_RACE
+        self.selected_menu_item = 0
+        self._index = 0
+        self._screens.append(enduro_info_1.EnduroInfo1(display, fonts))
+        self._screens.append(enduro_info_2.EnduroInfo2(display, fonts))
+
+    def get_screen(self):
+        return self._screens[self._index]
+    
+    def handle_input(self, button, action, system_state):
+        super().handle_input(button, action, system_state)
+        if button == buttons.COMMAND_BUTTON_1 and action == buttons.COMMAND_BUTTON_ACTION_SHORTPRESS:
+            # Button 1 - Cycle
+            self._cycle_screen()
+        if button == buttons.COMMAND_BUTTON_2 and action == buttons.COMMAND_BUTTON_ACTION_LONGPRESS:
+            # Button 2 Long Press - Change Modes
+            return ChangeModesMenuState(self.display, self.fonts, self)
+        pass
+
+    def _cycle_screen(self):
+        self._index += 1
+        if self._index >= len(self._screens):
+            self._index = 0
+        self._screens[self._index].clear()
 
 
 class ConfigurationMenuState(MenuState):
@@ -148,7 +248,8 @@ class ConfigurationMenuState(MenuState):
             if self.selected_menu_item >= len(self.menu_items):
                 self.selected_menu_item = 0
             print(self.selected_menu_item)
-
+            
+            
 class LoadRouteSheetMenuState(MenuState):
     def __init__(self, display, fonts):
         super().__init__(display, fonts)
