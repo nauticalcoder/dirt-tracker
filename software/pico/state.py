@@ -11,12 +11,12 @@ class SystemState(object):
         #f = open("settings.txt")
         self._units = UNITS_ENGLISH
         self._wheel_size = 21.0
-        
+        self._odometer_lifetime = 0.0
+            
         self.gps_enabled = True
         self.bluetooth_enabled = False
         
-        self.odometer_lifetime = 0.0
-        
+    
     def set_units(self, units):
         self._units = units
         # Persist to fs
@@ -30,4 +30,12 @@ class SystemState(object):
         
     def get_wheel_size(self):
         return self._wheel_size
+    
+    def set_odometer_lifetime(self, units):
+        self._units = _odometer_lifetime
+        # Persist to fs
+        
+    def get_odometer_lifetime(self):
+        return self._odometer_lifetime
+    
     

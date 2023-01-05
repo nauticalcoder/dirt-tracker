@@ -2,6 +2,7 @@ import datetime
 from machine import Pin, UART
 import math
 from phew import logging
+from services.distance import Distance
 from uasyncio import StreamReader
 
 BAUD_RATE = 9600
@@ -22,21 +23,14 @@ class GpsData(object):
         self.last_quality = None
         self.distance_traveled_since_last_update = None
     
-
-class Gps(object):
+class Gps(Distance):
     def __init__(self, logging = False):
+        super().__init__(logging)
+        
         self.uart = None
         self.task = None
-        self.last_latitude = None
-        self.last_longitude = None
-        self.last_altitude_m = None
-        self.last_ground_speed_knots = None
-        self.last_course = None
-        self.last_timestamp = None
-        self.last_quality = None
-        self.distance_traveled_since_last_update = None
         self.last_gps_data = None
-        self.logging = logging
+        
         # self.buffer = bytearray(1000)
 
     async def start(self, queue):
@@ -62,6 +56,7 @@ class Gps(object):
             # Calculate distance traveled
             if self.last_gps_data:
                 gps_data.distance_traveled_since_last_update = self._calculate_distance_traveled_since_last(gps_data, self.last_gps_data)
+                self.distance_traveled_since_last_update = gps_data.distance_traveled_since_last_update
                 if self.logging:
                     print(f"Distance traveled {gps_data.distance_traveled_since_last_update}")
             
