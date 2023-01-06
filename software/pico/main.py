@@ -27,13 +27,27 @@ async def render_loop(main_menu):
 
 
 async def distance_loop():
-    start_ticks = time.ticks_ms()
+    last_persist_ticks_ms = 0
+    distance_traveled_since_last_update = None
     while True:
-        gps_data = await gps_queue.get()
-        # Look at tim
+        if system_state.gps_enabled:
+            distance_traveled_since_last_update = gps.get_distance_traveled_since_last_update()
         
-        last_gps_timestamp = gps_data.timestamp
-        await sleep(0.1)
+        if distance_traveled_since_last_update:
+            # increment odometer
+            current_odometer = system_state.get_odometer_lifetime()
+            if time.ticks_ms() - last_persist_ticks > 30000:
+                system_state.set_odometer_lifetime(current_odometer + distance_traveled_since_last_update, True)
+                last_persist_ticks = time.ticks_ms()
+                print("Persist")
+            else:
+                 system_state.set_odometer_lifetime(current_odometer + distance_traveled_since_last_update)
+            
+        #print(distance_traveled_since_last_update)
+        
+        #gps_data = await gps_queue.get()
+        #last_gps_timestamp = gps_data.timestamp
+        await sleep(1)
 
 
 def handle_button_press(button, menu):
@@ -76,6 +90,7 @@ async def main():
     loop = get_event_loop()
     render_task = create_task(render_loop(main_menu))
     gps_task = create_task(gps.start(gps_queue))
+    distance_task = create_task(distance_loop())
     loop.run_forever()
     
     #await render_task

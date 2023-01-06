@@ -12,8 +12,7 @@ class Info2(Screen):
         super().__init__(SCREEN_INFO_2, display, fonts)
         if not display:
             return
-        # Setup sprites
-    
+        
     def clear(self):
         self.display.clear()
       

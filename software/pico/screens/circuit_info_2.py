@@ -6,7 +6,7 @@ import lib.ssd1309
 SCREEN_CIRCUIT_INFO_2 = "circuit-info-2"
 
 
-class CircuitInfo1(Screen):
+class CircuitInfo2(Screen):
     
     def __init__(self, display, fonts):
         super().__init__(SCREEN_CIRCUIT_INFO_2, display, fonts)

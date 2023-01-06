@@ -1,6 +1,5 @@
-
-UNITS_ENGLISH = 1
-UNITS_METRIC = 2
+import constants
+import time
 
 class SystemState(object):
     def __init__(self):
@@ -9,9 +8,11 @@ class SystemState(object):
         self.wireless = True
         # Load from fs
         #f = open("settings.txt")
-        self._units = UNITS_ENGLISH
+        self._units = constants.UNITS_ENGLISH
         self._wheel_size = 21.0
+        
         self._odometer_lifetime = 0.0
+        self._odometer_last_persisted_timestamp = None
             
         self.gps_enabled = True
         self.bluetooth_enabled = False
@@ -31,11 +32,14 @@ class SystemState(object):
     def get_wheel_size(self):
         return self._wheel_size
     
-    def set_odometer_lifetime(self, units):
+    def set_odometer_lifetime(self, units, persist = False):
         self._units = _odometer_lifetime
-        # Persist to fs
+        if persist:
+            _odometer_last_persisted_timestamp = time.ticks_ms()
+            # Persist to fs
         
     def get_odometer_lifetime(self):
         return self._odometer_lifetime
+    
     
     

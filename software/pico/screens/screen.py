@@ -15,6 +15,7 @@ class Screen(object):
         self.fonts = fonts
         
         self.display.clear()
+        
 
     def __str__(self):
         return f"Screen {self.name}"
